@@ -6,6 +6,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 
+var User = require('./models/user');
+
 var app = express();
 var http = require('http');
 var server = http.Server(app);
@@ -25,9 +27,16 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // ROUTES
-app.use('/', require('./routes/index'));
+//app.use('/', require('./routes/index'));
 // app.use('/auth', require('./routes/auth'));
 // app.use('/users', require('./routes/users'));
+app.get('/', function(req, res) {
+  
+
+  res.render('index');
+  // res.render('index', {users: users});
+  // res.sendFile(__dirname + '../views/index.html');
+});
 
 // 404 HANDLER
 app.use(function(req, res){
@@ -40,12 +49,25 @@ app.use(function(req, res){
 
 server.listen(PORT);
 
+
 io.on('connection', function(socket) {
   console.log('connected!');
   // socket.emit('message', {text: 'Hello there!', nums: [1,2,3]});
-  socket.on('join', function(data){
-    console.log(data);
+  socket.on('join', function(joinedUser){
+    //socket.emit('alluser');
     //socket.broadcast.emit('message',data);
     //pass the name to mongo
+
+    //generate coordinate and make the User object
+    var user = {};
+    user.name = joinedUser;
+    user.x = Math.floor(Math.random() * 550);
+    user.y = Math.floor(Math.random() * 350);
+    User.add(user, function(data){
+      console.log('user add', data);
+      socket.emit('success', user);
+    });
   });
 });
+
+

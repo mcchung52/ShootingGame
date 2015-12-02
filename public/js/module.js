@@ -1,6 +1,7 @@
 'use strict';
 
-var player = {
+var me = {
+  name: "",
   x: 0,
   y: 0
 };
@@ -10,9 +11,9 @@ var socket;
 $(document).ready(init);
 
 function init() {
-  var player = $('#player');
-  var container = $('#container');
-  var playLeft = 0;
+  // var me = $('#player');
+  // var container = $('#container');
+  // var playLeft = 0;
 
   socket = io.connect('http://localhost:3000');
   
@@ -21,30 +22,50 @@ function init() {
 }
 
 function joinClicked() {
-  var username = $('.username').val();
-  console.log(username);
-  socket.emit('join', username);
-  // socket.on('message', function(data) {
-  //   console.log('data:', data);
-  // })
+  me.name = $('.username').val();
+  console.log(me.name);
+
+  socket.emit('join', me.name);
+  socket.on('success', function(user) {
+    console.log('data:', user);
+
+    if (me.name === user.name) {
+      me.x = user.x;
+      me.y = user.y;
+      //create and draw myself onto container
+      var $me = $('<div>').addClass('player');
+      $me.attr("id", me.name);
+      $me.css("left", me.x);
+      $me.css("top", me.y);
+      $('#container').append($me);
+
+      //append my name to user list
+      var $p = $('<p>').text(user.name);
+      $('#users').append($p);      
+    }
+  });
 }
+
 
 function move(e) {
   if(e.keyCode === 39) {
-    player.x += speed;
-    $('#player').css("left",player.x);
+    me.x += speed;
+    $('#' + me.name).css("left", me.x);
   }
   else if(e.keyCode === 37) {
-    player.x -= speed;
-    $('#player').css("left",player.x);
+    me.x -= speed;
+    $('#' + me.name).css("left", me.x);
   }
   else if(e.keyCode === 38) {
-    player.y -= speed;
-    $('#player').css("top",player.y);
+    me.y -= speed;
+    $('#' + me.name).css("top", me.y);
   }
   else if(e.keyCode === 40) {
-    player.y += speed;
-    $('#player').css("top",player.y);
+    me.y += speed;
+    $('#' + me.name).css("top", me.y);
   }
+  //send to server my coordinate and
+  //get back whether 
+
 }
 

@@ -6,12 +6,13 @@
   top: 50px;
 }
 
-#player {
-  position: absolute;
+.player {
   height: 50px;
   width: 50px;
   border: 1px solid black;
   background-color: red;
+  position: absolute;
+  /*
   left: 0;
-  top: 0;
+  top: 0;*/
 }

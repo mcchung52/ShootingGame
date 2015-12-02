@@ -14,6 +14,12 @@ function init() {
   var playLeft = 0;
   
   $(window).keydown(function(e){move(e)});
+  $('#join').click(joinClicked);
+}
+
+function joinClicked() {
+  var username = $('.username').val();
+  console.log(username);
 }
 
 function move(e) {

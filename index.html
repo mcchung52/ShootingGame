@@ -4,24 +4,31 @@
   <meta charset="UTF-8">
   <title>Move</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <link rel="stylesheet" href="public/vendor/bootstrap/dist/css/bootstrap.min.css">
+  <script src="public/vendor/angular/angular.min.js"></script>
+  <script src="public/vendor/socket.io-client/socket.io.js"></script>
 </head>
 <body>
-  <form class="navbar-form navbar-left" role="search">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" class="form-control" placeholder="Search">
+  <div class="row">
+    <div class="navbar-form navbar-left" role="search">
+      <div>
+        <label for="name">Name</label>
+        <input type="text" class="username" placeholder="Search">
+      </div>
+      <button class="btn btn-default" id="join">Join</button>
+      <button class="btn btn-default">Logout</button>
     </div>
-    <button type="submit" class="btn btn-default">Join</button>
-    <button class="btn btn-default">Logout</button>
-  </form>
+  </div>
 
-  <div id='container'>
+  <div id='container' class='col-xs-10'>
     <div id="player"></div>
+  </div> 
+
+  <div class="col-xs-2" id="users">
+    <h4>users</h4>
   </div>
   
-  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="public/vendor/jquery/dist/jquery.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -52,11 +52,7 @@ server.listen(PORT);
 
 io.on('connection', function(socket) {
   console.log('connected!');
-  // socket.emit('message', {text: 'Hello there!', nums: [1,2,3]});
   socket.on('join', function(joinedUser){
-    //socket.emit('alluser');
-    //socket.broadcast.emit('message',data);
-    //pass the name to mongo
 
     //generate coordinate and make the User object
     var user = {};
@@ -68,7 +64,7 @@ io.on('connection', function(socket) {
       io.emit('joinSuccess', user);
     });
   });
-  
+
   socket.on('move', function(user) {
     io.emit('moveUpdate', user);
   });

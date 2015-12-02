@@ -14,9 +14,7 @@ function init() {
   // var me = $('#player');
   // var container = $('#container');
   // var playLeft = 0;
-
-  // socket = io.connect('http://localhost:3000');
-  
+    
   $(window).keydown(function(e){move(e)});
   $('#join').click(joinClicked);
 }

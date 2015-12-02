@@ -1,42 +1,51 @@
 'use strict';
 
-var player = {
-  x: 0,
-  y: 0
-};
-var speed = 10;
+var PORT = process.env.PORT || 3000;
 
-$(document).ready(init);
+var express = require('express');
+var bodyParser = require('body-parser');
+var morgan = require('morgan');
 
-function init() {
-  var player = $('#player');
-  var container = $('#container');
-  var playLeft = 0;
-  
-  $(window).keydown(function(e){move(e)});
-  $('#join').click(joinClicked);
-}
+var app = express();
+var http = require('http');
+var server = http.Server(app);
 
-function joinClicked() {
-  var username = $('.username').val();
-  console.log(username);
-}
+var io = require('socket.io')(server);
+//var SOCKET_PORT = process.env.SOCKET_PORT || 4000;
 
-function move(e) {
-  if(e.keyCode === 39) {
-    player.x += speed;
-    $('#player').css("left",player.x);
-  }
-  else if(e.keyCode === 37) {
-    player.x -= speed;
-    $('#player').css("left",player.x);
-  }
-  else if(e.keyCode === 38) {
-    player.y -= speed;
-    $('#player').css("top",player.y);
-  }
-  else if(e.keyCode === 40) {
-    player.y += speed;
-    $('#player').css("top",player.y);
-  }
-}
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/ShootingGame');
+
+app.set('view engine', 'jade');
+
+// GENERAL MIDDLEWARE
+app.use(morgan('dev'));
+app.use(bodyParser.urlencoded( {extended: true} ));
+app.use(bodyParser.json());
+app.use(express.static('public'));
+
+// ROUTES
+app.use('/', require('./routes/index'));
+// app.use('/auth', require('./routes/auth'));
+// app.use('/users', require('./routes/users'));
+
+// 404 HANDLER
+app.use(function(req, res){
+  res.status(404).render('404')
+})
+
+// app.listen(PORT, function(){
+//   console.log('Listening on port ', PORT);
+// });
+
+server.listen(PORT);
+
+io.on('connection', function(socket) {
+  console.log('connected!');
+  // socket.emit('message', {text: 'Hello there!', nums: [1,2,3]});
+  socket.on('join', function(data){
+    console.log(data);
+    //socket.broadcast.emit('message',data);
+    //pass the name to mongo
+  });
+});

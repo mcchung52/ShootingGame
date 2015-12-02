@@ -11,6 +11,8 @@
   width: 50px;
   border: 1px solid black;
   background-color: red;
+  text-align: center;
+  padding-top: 15px;
   position: absolute;
   /*
   left: 0;

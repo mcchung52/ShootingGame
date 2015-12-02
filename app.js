@@ -65,9 +65,14 @@ io.on('connection', function(socket) {
     user.y = Math.floor(Math.random() * 350);
     User.add(user, function(data){
       console.log('user add', data);
-      socket.emit('success', user);
+      io.emit('joinSuccess', user);
     });
   });
+  
+  socket.on('move', function(user) {
+    io.emit('moveUpdate', user);
+  });
 });
+
 
 

@@ -60,13 +60,28 @@ io.on('connection', function(socket) {
     user.x = Math.floor(Math.random() * 550);
     user.y = Math.floor(Math.random() * 350);
     User.add(user, function(data){
+      //handle error
       console.log('user add', data);
-      io.emit('joinSuccess', user);
+      User.find({}, function(err, allUsers){
+        //if (err) 
+          io.emit('joinSuccess', err || allUsers);
+      });
+      //io.emit('joinSuccess', user); //error might get passed in here
     });
   });
 
   socket.on('move', function(user) {
-    io.emit('moveUpdate', user);
+    User.update(user, function(updatedUser){
+      //handle error
+      console.log('name:',updatedUser.name);
+      console.log('x:', updatedUser.x);
+      console.log('y:', updatedUser.y);
+      io.emit('moveUpdate', updatedUser);      
+    });
+  });
+
+  socket.on('disconnect', function(user){
+    
   });
 });
 

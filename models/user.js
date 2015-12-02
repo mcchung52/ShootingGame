@@ -20,7 +20,20 @@ userSchema.statics.add = function (user, cb){
     newUser.x = user.x;
     newUser.y = user.y;
     newUser.save(function(err, savedUser){
-      if (err) return (cb(err))
+      if (err) return (cb(err));
+      cb(savedUser);
+    });
+  })
+}
+
+userSchema.statics.update = function(user, cb) {
+  User.findOne({name: user.name}, function(err, dbUser) {
+    if (err || !dbUser) return cb(err || 'whats happening here');
+
+    dbUser.x = user.x;
+    dbUser.y = user.y;
+    dbUser.save(function(err, savedUser){
+      if (err) return (cb(err));
       cb(savedUser);
     });
   })

@@ -19,6 +19,7 @@ function init() {
   // var me = $('#player');
   // var container = $('#container');
   // var playLeft = 0;
+  console.log(window.location.hostname);
   $('#logout').hide(true); 
   $(window).keydown(function(e){move(e)});
   $('#login').click(loginClicked);

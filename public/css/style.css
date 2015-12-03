@@ -2,7 +2,9 @@ body {
   background-color: #555555;
 }
 .header {
-  margin-left: 20px;
+  margin-left: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .header button {
   margin-left: 10px;

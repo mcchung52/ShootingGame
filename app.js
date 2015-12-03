@@ -52,6 +52,14 @@ server.listen(PORT);
 
 io.on('connection', function(socket) {
   console.log('connected!');
+
+  socket.on('join', function(empty){
+    User.find({}, function(err, allUsers){
+      //if (err) 
+        io.emit('joinUpdate', err || allUsers);
+    });
+  });
+
   socket.on('login', function(loginUser){
 
     //generate coordinate and make the User object

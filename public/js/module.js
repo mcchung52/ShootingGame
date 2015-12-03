@@ -23,6 +23,28 @@ function init() {
   $(window).keydown(function(e){move(e)});
   $('#login').click(loginClicked);
   $('#logout').click(logoutClicked);
+
+  socket.emit('join', "");
+  socket.on('joinUpdate', function(users) {
+    var $players = $('<div>');
+    var $userlist = $('<div>');
+    for (var i=0;i<users.length;i++) {
+      //create and draw player onto container
+      var $player = $('<div>').addClass('player');
+      $player.attr("id", users[i].name);
+      $player.text(users[i].name);
+      $player.css("left", users[i].x);
+      $player.css("top", users[i].y);
+      $players.append($player);
+      
+      var $p = $('<p>').text(users[i].name);
+      $userlist.append($p);
+    }
+    $('#container').append($players);
+    //var $p = $('<p>').text(user.name);
+    var $h4 = $('<h4>').text('users');
+    $('#users').empty().append($h4, $userlist);
+  });
 }
 
 function logoutClicked() {
@@ -48,6 +70,7 @@ socket.on('loginSuccess', function(users) { //error might get passed in here
   var $userlist = $('<div>');
 
   if (state === loginState) {
+    $('#container').empty();
     for (var i=0;i<users.length;i++) {
       if (me.name === users[i].name) {
         me.x = users[i].x;
@@ -67,7 +90,7 @@ socket.on('loginSuccess', function(users) { //error might get passed in here
     }
     state = postLogin;
 
-  } else if (state === postLogin) {
+  } else if (state === postLogin || state === joinState) {
       // if (users[i].loginAt >= me.loginAt && users[i].name !== me.name) {
         //create and draw player onto container
       var newUser = users.length - 1;
@@ -94,7 +117,7 @@ socket.on('loginSuccess', function(users) { //error might get passed in here
 });
 
 socket.on('moveUpdate', function(user){
-  if (me.name !== user.name) {
+  if (state === joinState || me.name !== user.name) {
     $('#' + user.name).css("left", user.x); //factor this out later
     $('#' + user.name).css("top", user.y);
   }

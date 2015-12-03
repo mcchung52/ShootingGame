@@ -30,11 +30,7 @@ app.use(express.static('public'));
 // app.use('/auth', require('./routes/auth'));
 // app.use('/users', require('./routes/users'));
 app.get('/', function(req, res) {
-  
-
   res.render('index');
-  // res.render('index', {users: users});
-  // res.sendFile(__dirname + '../views/index.html');
 });
 
 // 404 HANDLER
@@ -80,16 +76,25 @@ io.on('connection', function(socket) {
   socket.on('move', function(user) {
     User.update(user, function(updatedUser){
       //handle error
-      console.log('name:',updatedUser.name);
-      console.log('x:', updatedUser.x);
-      console.log('y:', updatedUser.y);
+      // console.log('name:',updatedUser.name);
+      // console.log('x:', updatedUser.x);
+      // console.log('y:', updatedUser.y);
       io.emit('moveUpdate', updatedUser);      
     });
   });
 
-  socket.on('disconnect', function(user){
-    
+  socket.on('logout', function(username){
+    User.findOne({name: username}, function(err, foundUser){
+      //if (err)
+      console.log('userToBeDeleted: ', foundUser);
+      User.remove({_id: foundUser._id}, function(err, deletedUser) {
+        console.log('user ' + foundUser.name + ' deleted/logged out');
+        io.emit('userOut', err || foundUser);
+      });
+    });
   });
+
+  //socket.on('disconnect')
 });
 
 

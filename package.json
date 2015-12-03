@@ -9,6 +9,9 @@
     "postinstall": "bower i",
     "start": "node app.js"
   },
+    "engines": {
+    "node": "5.1.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/YuhuaHe1989/ShootingGame.git"

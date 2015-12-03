@@ -4,6 +4,7 @@ var me = {
   name: "",
   x: 0,
   y: 0,
+  image: "",
   loginAt: 0
 };
 
@@ -23,33 +24,13 @@ var socket = io.connect(hostname);
 $(document).ready(init);
 
 function init() {
-  //console.log(window.location.hostname);
   $('#logout').hide(true); 
   $(window).keydown(function(e){move(e)});
   $('#login').click(loginClicked);
   $('#logout').click(logoutClicked);
 
-  socket.emit('join', "");
-  socket.on('joinUpdate', function(users) {
-    // var $players = $('<div>');
-    // var $userlist = $('<div>');
-    // for (var i=0;i<users.length;i++) {
-    //   //create and draw player onto container
-    //   var $player = $('<div>').addClass('player');
-    //   $player.attr("id", users[i].name);
-    //   $player.text(users[i].name);
-    //   $player.css("left", users[i].x);
-    //   $player.css("top", users[i].y);
-    //   $players.append($player);
-      
-    //   var $p = $('<p>').text(users[i].name);
-    //   $userlist.append($p);
-    // }
-    // $('#container').append($players);
-    // //var $p = $('<p>').text(user.name);
-    // var $h4 = $('<h4>').text('users');
-    // $('#users').empty().append($h4, $userlist);
-  });
+  //socket.emit('join', "");
+  //socket.on('joinUpdate', function(users) {
 }
 
 function logoutClicked() {
@@ -81,14 +62,18 @@ socket.on('loginSuccess', function(users) { //error might get passed in here
       if (me.name === users[i].name) {
         me.x = users[i].x;
         me.y = users[i].y;
+        me.image = users[i].image;
         me.loginAt = users[i].loginAt;
       }
       //create and draw player onto container
       var $player = $('<div>').addClass('player');
       $player.attr("id", users[i].name);
-      $player.text(users[i].name);
+      $player.text(users[i].name.length > 5 ? users[i].name.slice(0,4)+".." : users[i].name);
       $player.css("left", users[i].x);
       $player.css("top", users[i].y);
+      var $img = $('<img>').attr('src', users[i].image)
+
+      $player.append($img);
       $players.append($player);
       
       var $p = $('<p>').attr('id', users[i].name).text(users[i].name);
@@ -97,13 +82,16 @@ socket.on('loginSuccess', function(users) { //error might get passed in here
     state = postLogin;
 
   } else if (state === postLogin || state === joinState) {
-        //create and draw player onto container
+      //create and draw player onto container
       var newUser = users.length - 1;
       var $player = $('<div>').addClass('player');
       $player.attr("id", users[newUser].name);
-      $player.text(users[newUser].name);
+      $player.text(users[newUser].name.length > 5 ? users[newUser].name.slice(0,4)+".." : users[newUser].name);
       $player.css("left", users[newUser].x);
       $player.css("top", users[newUser].y);
+      var $img = $('<img>').attr('src', users[newUser].image);
+
+      $player.append($img);
       $players.append($player);
 
       var $p;
@@ -134,25 +122,21 @@ socket.on('userOut', function(user){
 function move(e) {
   if(me.name != "") {
     if(e.keyCode === 39 && me.x <= 534) {
-      // console.log('key39', me.x);
       me.x += speed;
       $('#' + me.name).css("left", me.x);
       socket.emit('move', me);
     }
     else if(e.keyCode === 37 && me.x >= 9) {
-      // console.log('key37', me.x);
       me.x -= speed;
       $('#' + me.name).css("left", me.x);
       socket.emit('move', me);
     }
     else if(e.keyCode === 38 && me.y >= 7) {
-      // console.log('key38', me.y);
       me.y -= speed;
       $('#' + me.name).css("top", me.y);
       socket.emit('move', me);
     }
     else if(e.keyCode === 40 && me.y <= 337) {
-      // console.log('key40', me.y);
       me.y += speed;
       $('#' + me.name).css("top", me.y);
       socket.emit('move', me);

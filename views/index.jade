@@ -8,53 +8,12 @@ head
   body
     .row
       .navbar-form.navbar-left(role='search')
-        div
-          label(for='name') Name   
-          input.username(type='text', placeholder='Search')  
-        button#login.btn.btn-default Login  
-        button#logout.btn.btn-default Logout   
+        .header   
+          input.username(type='text', placeholder='Enter your name')  
+          button#login.btn.btn-default Login  
+          button#logout.btn.btn-default Logout   
     #container.col-xs-10
     #users.col-xs-2
       h4 users
     script(src='vendor/jquery/dist/jquery.min.js')
     script(src='js/module.js')
-
-
-
-//- <!DOCTYPE html>
-          //ul
-          //- each user in users
-          //-   li= user
-//- <html lang="en">
-//- <head>
-//-   <meta charset="UTF-8">
-//-   <title>Move</title>
-//-   <link rel="stylesheet" href="style.css">
-//-   <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
-//-   <script src="vendor/angular/angular.min.js"></script>
-//-   <script src="vendor/socket.io-client/socket.io.js"></script>
-//- </head>
-//- <body>
-//-   <div class="row">
-//-     <div class="navbar-form navbar-left" role="search">
-//-       <div>
-//-         <label for="name">Name</label>
-//-         <input type="text" class="username" placeholder="Search">
-//-       </div>
-//-       <button class="btn btn-default" id="join">Join</button>
-//-       <button class="btn btn-default">Logout</button>
-//-     </div>
-//-   </div>
-
-//-   <div id='container' class='col-xs-10'>
-//-     <div id="player"></div>
-//-   </div> 
-
-//-   <div class="col-xs-2" id="users">
-//-     <h4>users</h4>
-//-   </div>
-  
-//-   <script src="vendor/jquery/dist/jquery.min.js"></script>
-//-   <script src="module.js"></script>
-//- </body>
-//- </html>

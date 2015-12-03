@@ -9,7 +9,7 @@ var me = {
 
 var joinState = 1, loginState = 2, postLogin = 3;
 var state = joinState;
-var speed = 10;
+var speed = 20;
 var socket = io.connect('http://localhost:3000');
 
 
@@ -26,24 +26,24 @@ function init() {
 
   socket.emit('join', "");
   socket.on('joinUpdate', function(users) {
-    var $players = $('<div>');
-    var $userlist = $('<div>');
-    for (var i=0;i<users.length;i++) {
-      //create and draw player onto container
-      var $player = $('<div>').addClass('player');
-      $player.attr("id", users[i].name);
-      $player.text(users[i].name);
-      $player.css("left", users[i].x);
-      $player.css("top", users[i].y);
-      $players.append($player);
+    // var $players = $('<div>');
+    // var $userlist = $('<div>');
+    // for (var i=0;i<users.length;i++) {
+    //   //create and draw player onto container
+    //   var $player = $('<div>').addClass('player');
+    //   $player.attr("id", users[i].name);
+    //   $player.text(users[i].name);
+    //   $player.css("left", users[i].x);
+    //   $player.css("top", users[i].y);
+    //   $players.append($player);
       
-      var $p = $('<p>').text(users[i].name);
-      $userlist.append($p);
-    }
-    $('#container').append($players);
-    //var $p = $('<p>').text(user.name);
-    var $h4 = $('<h4>').text('users');
-    $('#users').empty().append($h4, $userlist);
+    //   var $p = $('<p>').text(users[i].name);
+    //   $userlist.append($p);
+    // }
+    // $('#container').append($players);
+    // //var $p = $('<p>').text(user.name);
+    // var $h4 = $('<h4>').text('users');
+    // $('#users').empty().append($h4, $userlist);
   });
 }
 
@@ -120,28 +120,34 @@ socket.on('moveUpdate', function(user){
   if (state === joinState || me.name !== user.name) {
     $('#' + user.name).css("left", user.x); //factor this out later
     $('#' + user.name).css("top", user.y);
+
+
   }
 });
 
 
 function move(e) {
   if(me.name != "") {
-    if(e.keyCode === 39) {
+    if(e.keyCode === 39 && me.x <= 534) {
+      console.log('key39', me.x);
       me.x += speed;
       $('#' + me.name).css("left", me.x);
       socket.emit('move', me);
     }
-    else if(e.keyCode === 37) {
+    else if(e.keyCode === 37 && me.x >= 9) {
+      console.log('key37', me.x);
       me.x -= speed;
       $('#' + me.name).css("left", me.x);
       socket.emit('move', me);
     }
-    else if(e.keyCode === 38) {
+    else if(e.keyCode === 38 && me.y >= 7) {
+      console.log('key38', me.y);
       me.y -= speed;
       $('#' + me.name).css("top", me.y);
       socket.emit('move', me);
     }
-    else if(e.keyCode === 40) {
+    else if(e.keyCode === 40 && me.y <= 337) {
+      console.log('key40', me.y);
       me.y += speed;
       $('#' + me.name).css("top", me.y);
       socket.emit('move', me);

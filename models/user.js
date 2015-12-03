@@ -8,7 +8,8 @@ var User;
 var userSchema = Schema({
   name: { type: String, required: true },
   x: { type: Number },
-  y: { type: Number }
+  y: { type: Number },
+  loginAt: { type: Date, default: Date.now }
 });
 
 userSchema.statics.add = function (user, cb){

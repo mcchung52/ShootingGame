@@ -52,11 +52,11 @@ server.listen(PORT);
 
 io.on('connection', function(socket) {
   console.log('connected!');
-  socket.on('join', function(joinedUser){
+  socket.on('login', function(loginUser){
 
     //generate coordinate and make the User object
     var user = {};
-    user.name = joinedUser;
+    user.name = loginUser;
     user.x = Math.floor(Math.random() * 550);
     user.y = Math.floor(Math.random() * 350);
     User.add(user, function(data){
@@ -64,7 +64,7 @@ io.on('connection', function(socket) {
       console.log('user add', data);
       User.find({}, function(err, allUsers){
         //if (err) 
-          io.emit('joinSuccess', err || allUsers);
+          io.emit('loginSuccess', err || allUsers);
       });
       //io.emit('joinSuccess', user); //error might get passed in here
     });

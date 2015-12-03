@@ -10,7 +10,7 @@ var me = {
 var joinState = 1, loginState = 2, postLogin = 3;
 var state = joinState;
 var speed = 20;
-var socket = io.connect('http://localhost:3000');
+var socket = io.connect(window.location.hostname);
 
 
 $(document).ready(init);

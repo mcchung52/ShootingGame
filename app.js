@@ -4,7 +4,6 @@ var PORT = process.env.PORT || 3000;
 
 var express = require('express');
 var bodyParser = require('body-parser');
-var morgan = require('morgan');
 
 var User = require('./models/user');
 
@@ -21,7 +20,7 @@ mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/ShootingGame')
 app.set('view engine', 'jade');
 
 // GENERAL MIDDLEWARE
-app.use(morgan('dev'));
+//app.use(morgan('dev'));
 app.use(bodyParser.urlencoded( {extended: true} ));
 app.use(bodyParser.json());
 app.use(express.static('public'));

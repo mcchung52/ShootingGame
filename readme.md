@@ -1,4 +1,4 @@
 #Shooting Game
 
 server address:
-https://obscure-reef-1826.herokuapp.com/
+https://mario-game-1.herokuapp.com/
